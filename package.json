@@ -2,6 +2,9 @@
   "name": "random_dnd_monster_server",
   "version": "1.0.0",
   "description": "",
+  "engines" : {
+    "node" : "16.13.1"
+  },
   "main": "index.js",
   "scripts": {
     "test": "jest",
