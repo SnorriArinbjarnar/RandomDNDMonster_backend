@@ -55,6 +55,27 @@ getAbilityMod = async(monster) => {
 
 }
 
+filterMonstersByEnvironment = async(monsterArr, env) => {
+  const environments = {
+    'arctic' : [
+      'commoner',
+      'owl',
+      'bandit',
+      'blood-hawk'
+    ]
+  }
+
+  if(env === 'all'){
+    return monsterArr;
+  }
+  
+  const result = monsterArr.filter( d => {
+    return environments[env].includes(d.slug);
+  })
+  
+  return result;
+}
+
 getRandomMonsterByUrl = async(url) => {
     let getMonsters = null;
     let monsterArr = [];
@@ -114,17 +135,26 @@ getRandomMonsterByUrl = async(url) => {
   this is slower but you are always calling the endpoint twice, no matter how many
   pages there are.
 */
- getMonstersUsingLimitCount = async(url) => {
+ getMonstersUsingLimitCount = async(url, env) => {
   let getMonsters = null;
   let index = null;
 
   try {
       getMonsters = await getPage(url);
+      
       const count = getMonsters.count;
-      index = Math.floor(Math.random() * count);
+      
       let newUrl = url + '&limit=' + count;
+      let filteredMonsters;
       getMonsters = await getPage(newUrl);
-      return getMonsters.results[index];
+      
+        getMonsters = await filterMonstersByEnvironment(getMonsters.results, env);
+      
+      
+      index = Math.floor(Math.random() * getMonsters.length);
+      console.log(getMonsters);
+      
+      return getMonsters[index];
   } catch (err) {
       console.error(err);
   }

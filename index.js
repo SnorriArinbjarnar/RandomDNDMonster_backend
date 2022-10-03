@@ -67,10 +67,26 @@ app.get("/api/challenge_ratings", (req, res) => {
     res.json(types)
 });
 
+app.get("/api/env", (req, res) => {
+    /* 
+    The fractional challenge ratings are a edge case.  If the value would be
+    the actual fractions the api call would be:
+        api/monsters/type/1/4 
+    Instead I use a digit and change them
+    */
+    const environments = [
+        {value: 'all', label: 'All'},
+        {value: 'arctic', label: 'Arctic'},
+    ];
+    res.json(environments)
+});
+
 app.get("/api/monster/:type", async(req, res) => {
     const type = req.params.type;
     const url = 'https://api.open5e.com/monsters/?type=' + type;
     let monster = await getRandomMonsterByUrl(url);
+    
+    
 
     res.json(monster)
 });
@@ -87,6 +103,35 @@ app.get("/api/monster/:type/:cr", async(req, res) => {
     }
     const url = 'https://api.open5e.com/monsters/?type=' + type + '&challenge_rating=' + cr;
     let monster = await getRandomMonsterByUrl(url);
+  
+    let copyMonster;
+    if(monster){
+        copyMonster = await getAbilityMod(monster);
+
+    }
+    
+    if(copyMonster){
+        res.json(copyMonster)
+    }
+    else {
+        res.json(monster)
+    }
+    
+});
+app.get("/api/monster/:type/:cr/:env", async(req, res) => {
+    const fractions = {
+        0.25  : '1/4',
+        0.5   : '1/2',
+        0.125 : '1/8'
+    };
+    const type = req.params.type;
+    const env = req.params.env;
+    let cr = req.params.cr;
+    if(fractions[cr]){
+        cr = fractions[cr];
+    }
+    const url = 'https://api.open5e.com/monsters/?type=' + type + '&challenge_rating=' + cr;
+    let monster = await getMonstersUsingLimitCount(url, env);
   
     let copyMonster;
     if(monster){
