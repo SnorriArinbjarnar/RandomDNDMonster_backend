@@ -61,7 +61,37 @@ filterMonstersByEnvironment = async(monsterArr, env) => {
       'commoner',
       'owl',
       'bandit',
-      'blood-hawk'
+      'blood-hawk',
+      'kobold',
+      'tribal-warrior',
+      'giant-owl',
+      'ice-mephit',
+      'orc',
+      'scout',
+      'brown-bear',
+      'half-ogre',
+      'bandit-captain',
+      'berserker',
+      'druid',
+      'griffon',
+      'ogre',
+      'orog',
+      'polar-bear',
+      'saber-toothed-tiger',
+      'manticore',
+      'veteran',
+      'winter-wolf',
+      'revenant',
+      'troll',
+      'werebear',
+      'mammoth',
+      'young-white-dragon',
+      'frost-giant',
+      'remorhaz',
+      'roc',
+      'adult-white-dragon',
+      'ancient-white-dragon'
+
     ]
   }
 
